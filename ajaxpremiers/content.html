@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <title>Affichage informations DVD</title>
+  </head>
+  <body>
+     <script src=ajaxlib.js"></script>
+     <script>
+        var items = response.getElementsByTagName("item");
+        var html = '';  /* Presentation html de la liste dvd*/
+        count = items.length;
+        for (i=0; i < count; i++) { /* pour chaque item */
+		html += '<div class="item">'
+		html += '<h1>' + items[i].getElementsByTagName("title")[0].firstChild.nodeValue + '</h1>';
+		html += '<div class="author">Realisateur : ';
+		html += items[i].getElementsByTagName("director")[0].firstChild.nodeValue + '</div>';
+		html += '<div class="price">Prix : ';
+		html += items[i].getElementsByTagName("price")[0].firstChild.nodeValue + ' £</div>';
+                html += '</div>';
+	}
+        document.getElementById('content').innerHTML += html;
+     </script>
+  </body>
+</html>

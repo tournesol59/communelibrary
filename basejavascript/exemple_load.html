@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>exemple de suivi de progression octets telecharge</title>
+  </head>
+  <body>
+    <script>
+// 1. Creer un nouvel objet XMLHttpRequest
+	    let xhr = new XMLHttpRequest();
+// 2. Le configure: GET-request pour l'URL /article/.../load
+            xhr.open('GET', '/article/xmlhttprequest/example/load');
+// 3. Envoyer la requete sur le reseau
+            xhr.send();
+// 4. Ceci sera appele apres la reception de la reponse
+            xhr.onload = function() {
+               if (xhr.status != 200) { // analyse l etat HTTP de la reponse
+	          alert('Error ${xhr.status}: ${xhr.statusText}'); // e.g. 404: Not Found
+	       } else { // show the result
+                  alert('Done, got ${xhr.response.length} bytes');
+	       }
+	    };
+         
+            xhr.onprogress = function(event) {
+	       if (lengthComputable) { // true si reponse recue du serveur
+                   alert('Received ${event.loaded} pf ${event.total} bytes");
+	       } else {
+		   alert('Received ${event.loaded} bytes'); // pas de Content-Length
+               }
+	     };
+              
+             xhr.onerror = function() {
+		    alert("Request failed");
+	     };
+
+    </script>
+  </body>
+</html>

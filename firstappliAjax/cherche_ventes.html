@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <title>Test utilisation classe Ajax.Request</title>
+  </head>
+  <body>
+     
+     <script>
+        function rechercheVentes() {
+
+           var idEmploye = $F('listeEmployes');
+           var annee = $F('listeAnnees');
+           var url = 'http://127.0.0.1/firstapplicationAjax/cherche_ventes';
+           var parametres = 'idEmploye=' + idEmploye + '&annee=' + annee;
+
+           var myAjax = new Ajax.Request(
+// nous passons un objet anonyme avec un pte method qui contient get, une autre parametres (de la requete) et une autre qui contient la methode appelee lorsque la requete est indiquee complete par XLHttpRequest
+               url,
+               {
+                   method: 'get',
+                   parameters: parametres,
+                   onComplete: afficheReponse
+               }
+            );
+        }
+
+        function afficheReponse(requete) {
+           // affiche le XML dans le textarea
+           $('resultat').value = requete.responseText;
+        }
+     </script>
+         
+     <select id="listeEmployes" size="10" onchange="rechercheVentes()">
+         <option value="5">Buchanan, Steven</option>  
+         <option value="8">Callahann, Laura</option>  
+         <option value="1">Davolio, Nancy</option>  
+     </select>
+     <select od="listeAnnees" size="3" onchange="rechercheVentes()">
+         <option selected="selected" value="1996">1996</option>  
+         <option value="1997">1997</option>  
+         <option value="1998">1998</option>  
+     </select>
+     <br>
+     <textarea id='resultat' cols=60 rows=10></textarea>
+  <body>
+
+</html>

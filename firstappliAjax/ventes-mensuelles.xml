@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<reponse-ajax>
+    <reponse type="object" id="detailsProduit">
+        <ventes-mensuelles>
+            <ventes-employe>
+                <id-employe>1234</id-employe>
+                <annee-mois>1998-01</annee-mois>
+                <ventes>$8,115.36</ventes>
+            </ventes-employe>
+            <ventes-employe>
+                <id-employe>1234</id-employe>
+                <annee-mois>1998-02</annee-mois>
+                <ventes>$11,147.51</ventes>
+            </ventes-employe>
+        </ventes-mensuelles>
+    </reponse>
+</reponse-ajax>

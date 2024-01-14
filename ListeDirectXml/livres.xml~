@@ -1,0 +1,18 @@
+<livre>
+   <item>
+       <title>Odyssee</title>
+       <author>Clive Cussler</author>
+   </item>
+   <item>
+	<title>Une chance de trop</title>
+	<author>Harlan Coben</author>
+   </item>
+   <item>
+	<title>Dune</title>
+	<author>Franck Herbert</author>
+   </item>
+   <item>
+
+   </item>
+   <!-- fred: on fera un seul livre par auteur pour commencer, apres il faut passer en base de donnees -->
+</livre>

@@ -1,0 +1,23 @@
+<livre>
+   <item>
+       <title>Odyssee</title>
+       <author>Clive Cussler</author>
+       <resume>Resume du texte Odyssee</resume>
+   </item>
+   <item>
+	<title>Une chance de trop</title>
+	<author>Harlan Coben</author>
+       <resume>Resume du texte Une chance..</resume>
+   </item>
+   <item>
+	<title>Dune</title>
+	<author>Franck Herbert</author>
+       <resume>Resume du texte Dune</resume>
+   </item>
+   <item>
+        <title>Pierre Bordages</title>
+	<author>Les guerriers du silence</author>
+       <resume>Resume du texte Les guerriers..</resume>
+   </item>
+   <!-- fred: on fera un seul livre par auteur pour commencer, apres il faut passer en base de donnees -->
+</livre>

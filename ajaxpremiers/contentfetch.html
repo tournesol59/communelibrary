@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <title>Affichage informations DVD</title>
+  </head>
+  <body>
+     <!-- script src=ajaxlib.js"-->
+	     <!-- /script -->
+     <script src="ajaxlibfetch2.js">
+     </script>
+     <script>
+/********* BEFORE	
+var xhr=getXMLHttpRequest();
+// la fonction handleHttpResponse est fournie plus loin dans cet article
+xhr.onreadystatechange = handleHttpResponse;
+var url = "dvd.xml";
+xhr.open("GET", url, true);
+// A preciser pour les requetes de type POST
+//xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//
+xhr.send(null);
+// xhr.send("var1=value&var2=othervalue");
+function handleHttpResponse() {
+   if (xhr.readyState == 4 && xhr.status == 200) {
+      //xhr.responseXML permet dobtenir le fichier XML
+      // xhr.responseText aurait retourne le fichier sous format texte
+	   response = cleanXML(xhr.responseXML.documentElement);
+   }
+}
+*******/
+
+async function getDvd() {
+	try {
+		const response = await fetch('https://127.0.0.1/ajaxpremiers/dvd.xml');
+		
+		if (!response.ok) {
+			throw new Error('Error ! status: ${response.status}');
+		}
+
+		const result = await response.xml();
+                
+		items = result.getElementsByTagName("item");
+
+		return items[0].getElementsByTagName("title")[0].firstChild.nodeValue;
+
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+    </script>
+  </body>
+</html>

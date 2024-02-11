@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<livres>
+   <livre>
+      <auteur>Maitine Bergounioux</auteur>
+      <titre> Mathematiques pour le traitement du signal</titre>
+   </livre>
+   <livre>
+      <auteur>Maitine Bergounioux</auteur>
+      <titre> Mathematiques pour le traitement du signal</titre>
+   </livre>
+      <auteur>David Declercq</auteur>
+      <titre>Detection et estimation des signaux - questions</titre>
+   </livre>
+   <livre>
+      <auteur>E. Landau<auteur>
+      <titre>Identification des systemes</titre>
+   </livre>
+</livres>   

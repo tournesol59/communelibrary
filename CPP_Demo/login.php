@@ -13,6 +13,7 @@ else {
    $postfirst = $postData['firstname'];
    $postsite = $postData['homepage'];
    $birthdate = $postData['birthdate'];
+   $option = $postData['option'];
 	//********** connection to db
    mysql_connect("localhost","root","root");
    mysql_select_db("usercpp");
@@ -63,17 +64,32 @@ else {
         <h1>Contactez nous</h1>
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="idname" name="name">
             </div>
 	    <div class="mb-3">
 	    <div class="mb-3">
                 <label for="firstname" class="form-label">Prenom</label>
-                <input type="text" class="form-control" id="firstname" name="firstname">
+                <input type="text" class="form-control" id="idfirstname" name="firstname">
+	    </div>
+            <div class="mb-3">
+
+                <label for="birthdate" class="form-label">Votre date de naissance (dd-mm-yyyy)</label>
+                <input type="text" class="form-control" id="idbirthdate" name="birthdate">
+	    </div>
+	       <label for="option" class="form-label">Votre cursus</label>
+		<select name="option" id="idoption">
+                    <option value="1">CDR</option>
+                    <option value="2">MP</option>
+		    <option value="3">PROD</option>
+		    <option value="3">MAT</option>
+                    <option value="4">ENT</option>
+                    <option value="5">INTER</option>
+                </select>
             </div>
             <div class="mb-3">
 
                 <label for="homepage" class="form-label">Votre site web personnel</label>
-                <input type="text" class="form-control" id="homepage" name="homepage"></textarea>
+                <textarea class="form-control" placeholer="page perso" id="homepage" name="homepage"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Envoyer</button>
 	</form>

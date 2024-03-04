@@ -64,20 +64,20 @@ else {
         <h1>Contactez nous</h1>
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="idname" name="name">
+                <input type="text" class="form-control" id="name" name="name">
             </div>
 	    <div class="mb-3">
 	    <div class="mb-3">
                 <label for="firstname" class="form-label">Prenom</label>
-                <input type="text" class="form-control" id="idfirstname" name="firstname">
+                <input type="text" class="form-control" id="firstname" name="firstname">
 	    </div>
             <div class="mb-3">
 
                 <label for="birthdate" class="form-label">Votre date de naissance (dd-mm-yyyy)</label>
-                <input type="text" class="form-control" id="idbirthdate" name="birthdate">
+                <input type="text" class="form-control" id="birthdate" name="birthdate">
 	    </div>
 	       <label for="option" class="form-label">Votre cursus</label>
-		<select name="option" id="idoption">
+		<select name="option" id="option">
                     <option value="1">CDR</option>
                     <option value="2">MP</option>
 		    <option value="3">PROD</option>

@@ -1,0 +1,18 @@
+<?php
+$postData=$_POST;
+$username=$postData['name'];
+$useremail=$postData['email'];
+$usermsg=$postData['requete'];
+
+$to='frederic.peugny@gmail.com';
+
+$subject='Tutorial - Test Mail';
+$msg='Message du mail'.$usermsg;
+//headers
+$headers='From: Frederic Peugny <mail@server.com>'."\r\n";
+$headers .= 'Bcc: moi <frederic.peugny@gmail.com>; lui <frederic.peugny.auditeur@lecnam.net>'."\r\n";
+$headers .= "\r\n";
+
+// Function mail()
+mail($to, $subject, $msg,$headers);
+?>

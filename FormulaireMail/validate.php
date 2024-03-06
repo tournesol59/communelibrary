@@ -34,18 +34,39 @@ else
      else
      {
 	/* envoi de l'e-mail */
-$to='frederic.peugny@gmail.com';
 
-$subject='Tutorial - Test Mail';
-$msg='Message du mail'."\r\n\r\n";
-$msg .= $usermsg."\r\n";
-//headers
-$headers='From: '.$username.' <'.$useremail.'>'."\r\n\r\n";
-$headers .= "\r\n";
-
-// Function mail()
-mail($to, $subject, $msg,$headers);
-     }
+/* Namespace alias */
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    /* include the Composer generated autoload.php file */
+    require '/opt/lampp/composer/vendor/autoload.php';
+    /* If you installed PHPMailer without Composer do this instead: */
+    /* ... */
+    /* Create a new PHPMailer object. Passing TRUE to the constructor enables exceptions */
+    $mail = new PHPMailer(TRUE);
+    try {
+      // mail sender
+      $mail->setFrom('frederic.peugny@gmail.com');
+      // a mail recipient
+      $mail->addAddress($useremail);
+      // set subject
+      $mail->Subject='Test PHPMail';
+      // set message body
+      $mail->Body='Hello '.$username.'A simple test message to validate your text in the form: '.$usermsg;
+ 
+      $mail->send();
+    }
+    catch (Exception $e)
+    {
+      /* PHPMailer exception */
+      echo $e->errorMessage();
+    }
+    catch (Exception $e)
+    {
+	    /* PHP exception (note the backslash to select the global namespace Exception class). */
+      echo $e->getMessage();
+    }
+   }
   }
 }
 if (!empty($alert))

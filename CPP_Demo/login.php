@@ -4,7 +4,7 @@ $statusUser = "";
 $loggedUser="";
 $errorMessage="";
 
-if ((!isset($postData['name']) || (!isset($postData['firstname']) || (!isset($postData['homepage']) || (!isset($postData['birthdate'])) {
+if ((!isset($postData['name'])) || (!isset($postData['firstname'])) || (!isset($postData['homepage'])) || (!isset($postData['birthdate']))) {
    $statusUser = "error";
    $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
 }
@@ -15,11 +15,11 @@ else {
    $birthdate = $postData['birthdate'];
    $option = $postData['option'];
 	//********** connection to db
-   mysql_connect("localhost","root","root");
-   mysql_select_db("usercpp");
+   mysqli_connect("localhost","root","root");
+   mysqli_select_db("usercpp");
    $res=mysql_query("SELECT * FROM users ORDER BY name WHERE name="+$postname);
    $icount = 0;
-   while ($row=mysql_fetch_assoc($res)) {
+   while ($row=mysqli_fetch_assoc($res)) {
    // only a simple display to test
 	   //      echo "<p>".row['firstname']."</p>";
       $icount +=1;
@@ -33,10 +33,10 @@ else {
    // if there is more than one row one should compare the birthdate
    elseif ($icount > 1) {
       $jcount=0;
-      while ($row=mysql_fetch_assoc($res) {
+      while ($row=mysql_fetch_assoc($res)) {
          if (($row['firstname']===$postfirst) || ($row['birthdate']===$postbirth)) {
 	   $jcount+=1;
-	   $loggedUser=['login' => sprintf(%s.%s.%d, $postfirst, $postname, $jcount)];
+	   $loggedUser=['login' => sprintf('%s.%s.%d', $postfirst, $postname, $jcount)];
 	 }
       }
       $statusUser="connected";
@@ -46,14 +46,14 @@ else {
    }
 
    // ON COURT CIRCUITE UN PEU POUR TESTER LA PARTIE FORULAIRE SEULEMENT
-   $statusUser="connected";
-   $loggedUser=['login' => 'frederic.peugny@libertysurf.fr'];
-
+   //$statusUser="connected";
+   //$loggedUser=['login' => 'frederic.peugny@libertysurf.fr'];
+}
 ?>
 
 <!-- then follow of our application : redo the form index.php if the user is not authenticated-->
 
-<?php if (!isset($loggedUser)) : ?>
+<?php if (!isset($loggedUser['login'])) : ?>
         <form action="index.php" method="POST">
 	<!-- si message d erreur on affiche -->
 	<?php if (isset($errorMessage)) : ?>
@@ -95,7 +95,7 @@ else {
 	</form>
 <?php else : ?>
    <div class="alert alert-success" role="alert">
-      Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !
+      <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
    </div>
 <?php endif; ?>
 

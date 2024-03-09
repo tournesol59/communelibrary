@@ -4,7 +4,7 @@ $statusUser = "";
 $loggedUser="";
 $errorMessage="";
 
-if ((!isset($postData['name']) || (!isset($postData['firstname']) || (!isset($postData['homepage']) || (!isset($postData['birthdate'])) {
+if ((!isset($postData['name'])) || (!isset($postData['firstname'])) || (!isset($postData['homepage'])) || (!isset($postData['birthdate']))) {
    $statusUser = "error";
    $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
 }
@@ -33,10 +33,10 @@ else {
    // if there is more than one row one should compare the birthdate
    elseif ($icount > 1) {
       $jcount=0;
-      while ($row=mysql_fetch_assoc($res) {
+      while ($row=mysql_fetch_assoc($res)) {
          if (($row['firstname']===$postfirst) || ($row['birthdate']===$postbirth)) {
 	   $jcount+=1;
-	   $loggedUser=['login' => sprintf(%s.%s.%d, $postfirst, $postname, $jcount)];
+	   $loggedUser=['login' => sprintf('%s.%s.%d', $postfirst, $postname, $jcount)];
 	 }
       }
       $statusUser="connected";
@@ -46,14 +46,14 @@ else {
    }
 
    // ON COURT CIRCUITE UN PEU POUR TESTER LA PARTIE FORULAIRE SEULEMENT
-   $statusUser="connected";
-   $loggedUser=['login' => 'frederic.peugny@libertysurf.fr'];
-
+   //$statusUser="connected";
+   //$loggedUser=['login' => 'frederic.peugny@libertysurf.fr'];
+}
 ?>
 
 <!-- then follow of our application : redo the form index.php if the user is not authenticated-->
 
-<?php if (!isset($loggedUser)) : ?>
+<?php if (!isset($loggedUser['login'])) : ?>
         <form action="index.php" method="POST">
 	<!-- si message d erreur on affiche -->
 	<?php if (isset($errorMessage)) : ?>
@@ -64,20 +64,20 @@ else {
         <h1>Contactez nous</h1>
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="idname" name="name">
+                <input type="text" class="form-control" id="name" name="name">
             </div>
 	    <div class="mb-3">
 	    <div class="mb-3">
                 <label for="firstname" class="form-label">Prenom</label>
-                <input type="text" class="form-control" id="idfirstname" name="firstname">
+                <input type="text" class="form-control" id="firstname" name="firstname">
 	    </div>
             <div class="mb-3">
 
                 <label for="birthdate" class="form-label">Votre date de naissance (dd-mm-yyyy)</label>
-                <input type="text" class="form-control" id="idbirthdate" name="birthdate">
+                <input type="text" class="form-control" id="birthdate" name="birthdate">
 	    </div>
 	       <label for="option" class="form-label">Votre cursus</label>
-		<select name="option" id="idoption">
+		<select name="option" id="option">
                     <option value="1">CDR</option>
                     <option value="2">MP</option>
 		    <option value="3">PROD</option>
@@ -95,7 +95,7 @@ else {
 	</form>
 <?php else : ?>
    <div class="alert alert-success" role="alert">
-      Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !
+      <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
    </div>
 <?php endif; ?>
 

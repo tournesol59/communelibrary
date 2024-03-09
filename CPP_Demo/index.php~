@@ -19,7 +19,7 @@ require_once(__DIR__ . '/functions.php');
 <!-- no , we include the page login.php which does the conditional treatment -->
    <?php require_once(__DIR__ . '/login.php'); ?>
 
-   <?php if (isset($loggedUser['login'])) : ?>
+   <?php if (isset($loggedUser['login']))) : ?>
    <!-- the identification has established -->        
       <div class="alert alert-success" role="alert">
       <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>

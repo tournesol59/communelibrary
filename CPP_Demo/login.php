@@ -9,11 +9,6 @@ if ((!isset($postData['email'])) || (!isset($postData['password']))) {
    $errorMessage = "Veuillez entrer vos identifiants de connexion";
 }
 else {
-   if (($postData['email'] === 'admin') && ($postData['password']='root123')) {
-	   // fred: hard coded admin authentication
-      $loggedUser['login']="olivier";  // in order to bypass the copy of login form in admin.php
-      require_once('./admin.php');
-   }
    $postemail = $postData['email'];
    $postpasswd = $postData['password'];
    //verification : connection to database
@@ -28,7 +23,7 @@ else {
       $_connection->exec("set names utf8");
       $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-      $sql = "SELECT * FROM users ORDER BY name WHERE name=".$postemail);
+      $sql = "SELECT * FROM users ORDER BY name WHERE name=".$postemail;
       $query = $_connection->prepare($sql);
       $query->execute();
       $result = $query->fetchAll();
@@ -37,7 +32,7 @@ else {
       echo "Erreur de connexion : " .$exception->getMessage();
    }
    $icount = 0;
-   while isset($result[$icount]) {
+   while (isset($result[$icount])) {
       if ($result[$icount]['firstname'] === $postemail) { // firstname is an email, lastname is a name
          $statusUser = "connected";
          $loggedUser = ['login' => $postemail];
@@ -57,11 +52,11 @@ else {
      <?php endif ; ?>
         <h1>Entrez vos identifiants</h1>
             <div class="mb-3">
-                <label for="email" class="form-label">Nom</label>
+                <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control" id="email" name="email">
             </div>
 	    <div class="mb-3">
-                <label for="password" class="form-label">Prenom</label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password">
 	    </div>
             <button type="submit" class="btn btn-primary">Envoyer</button>

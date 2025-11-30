@@ -1,0 +1,69 @@
+<script src=jquery.js></script>
+
+<script>
+
+
+function miseajourContact() {
+   var txt=""; // debug
+   $.ajax({
+      url : "http://127.0.0.1/CPP_Demo/contacts.xml";
+      complete : function(xhr, result) 
+      {
+         // traitement ici
+	 if (result != "success" return;
+	 var items = xhr.responseXML.getElementsByTagName("contact");
+
+	 let opts = "";
+	 for (let i=0; i < items.length; i++) {
+	    opts += "<option value="+i+">" + items[i].childNodes[0].nodeValue + "</option>";
+	 }
+	 document.getElementById("contact").innerHTML = txt; // est ce que ca reintialise tous les choix de contacts?
+      }
+   });
+}
+</script>
+
+ 
+<?php
+$postData=$_POST;
+$statusContact = "";
+$loggedUser = "";
+$errorMessage = "";
+
+if (!isset($postData['contactname')) {
+   $statusContact="noselected";
+   $errorMessage="vous n'avez pas selectionne de contact referent";
+}
+else {
+   $contactname = $postData['contactname'];
+   // interrogation en base de donnees pour avoir l'adresse du contact
+   $statusContact = "selected";
+   $loggedUser['contactname'] = $contactname;
+   $errorMessage = "";   
+}
+
+?>
+
+<?php if (!isset($loggedUser['contactname'])) : ?>
+    <?php if (isset($errorMessage)) : ?>
+    <div class="alert alert-danger">
+        <?php echo $errorMessage ?>
+    </div>
+    <h2>Veuillez selectionner un contact</h2>
+    <form>
+       <select name="contact" id="contact" onchange='miseajourContact()'>
+          <?php
+            foreach ($contacts as $contact) {
+		    echo "<option value='".
+			    $contact['id'].">"..
+			    $contact['name'].
+			    "</option>";
+            }
+          ?>
+       </select>
+    </form>
+    <?php endif; ?>
+<?php else : ?>
+    <p>Vous avez selectionne ce contact <?php echo $loggedUser['contactname'] ?></p>
+<?php endif; ?>
+

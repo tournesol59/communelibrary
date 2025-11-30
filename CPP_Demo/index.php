@@ -20,10 +20,16 @@ require_once(__DIR__ . '/functions.php');
    <?php require_once(__DIR__ . '/login.php'); ?>
 
    <?php if (isset($loggedUser['login'])) : ?>
-   <!-- the identification has established -->        
-      <div class="alert alert-success" role="alert">
-      <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
-      </div>
+   <!-- the identification has established --> 
+       <?php if (!isset($loggerUser['contactname'])) : ?>  
+       <!-- has a contact been selected in contactref.php ? -->  
+	  <?php require_once(__DIR__.'/contactref.php'); ?>
+        <?php else: ?>
+         <div class="alert alert-success" role="alert">
+            <p>Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
+	    <p>Votre contact est <?php echo $loggedUser['contactname']; ?></p>
+	 </div>
+       <?php endif; ?>
    <?php endif; ?>
  </div>
 

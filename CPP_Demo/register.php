@@ -26,7 +26,7 @@ else {
       $_connection->exec("set names utf8");
       $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-      $sql = "INSERT INTO user (name,firstname,publication,birthdate,useroption,password) VALUES(?,?,?,?,?,?);";
+      $sql = "INSERT INTO user (name,email,publication,birthdate,useroption,password) VALUES(?,?,?,?,?,?);";
       $query = $_connection->prepare($sql);
       $query->bindValues($name, $email, $site, $birthdate, $option, $password);
       $query->execute();
@@ -87,9 +87,9 @@ else {
                     <option value="1">MED</option>
                     <option value="2">DRO</option>
 		    <option value="3">LIT</option>
-		    <option value="3">ING</option>
-                    <option value="4">ENT</option>
-                    <option value="5">INTER</option>
+		    <option value="4">ING</option>
+                    <option value="5">ENT</option>
+                    <option value="6">INTER</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -101,7 +101,10 @@ else {
 	</form>
 <?php else : ?>
    <div class="alert alert-success" role="alert">
-      <p>Bonjour <?php if (isset($loggedUser['login'])) echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
+      <?php if (!isset($loggedUser['contactname'])) {  //if (isset($loggedUser['login'])) echo $loggedUser['login'];
+         
+         require_once(__DIR__.'/contactref.php');
+      ?>
    </div>
 <?php endif; ?>
 

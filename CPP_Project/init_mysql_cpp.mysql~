@@ -1,0 +1,11 @@
+CREATE DATABASE usercpp;
+CREATE TABLE users (
+   name VARCHAR(80),
+   firstname VARCHAR(80),
+   publication VARCHAR(255),
+   birthdate DATE,
+   option3a VARCHAR(10),
+   passwd VARCHAR(80),
+   repasswd VARCHAR(80)
+);
+

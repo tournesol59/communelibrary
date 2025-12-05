@@ -24,7 +24,7 @@ require_once(__DIR__ . '/functions.php');
        <?php if (!isset($loggerUser['contactname'])) : ?>  
        <!-- has a contact been selected in contactref.php ? -->  
 	  <?php require_once(__DIR__.'/contactref.php'); ?>
-        <?php else: ?>
+       <?php else: ?>
          <div class="alert alert-success" role="alert">
             <p>Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
 	    <p>Votre contact est <?php echo $loggedUser['contactname']; ?></p>

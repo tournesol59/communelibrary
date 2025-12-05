@@ -1,0 +1,4 @@
+<h1>La ville de votre contact</h1>
+<p>Votre contact est <?= $contact['name'] %>. Lieu de residence <%= $contact['city'] ?> </p>
+
+

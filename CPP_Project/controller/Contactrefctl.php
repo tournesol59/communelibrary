@@ -1,0 +1,37 @@
+<?php
+namespace controller;
+
+class Contactrefctl extends Controllerabs {
+   private string $host = "localhost";
+   private string $db_name = "usercpp";
+   private string $db_user = "root";
+   private string $db_passwd = "";
+   public string $table = "user";
+   public string $contactname = "";
+
+// propriete qui contiendra l instance de connexion
+   protected $model;
+
+   public function __construct($modelname) {     // nothing
+      var_dump(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
+      require_once(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
+      // $this->model = new \model\contactrefmod(); // does not work
+      $modelname = '\\model\\'.$modelname;
+      var_dump($modelname);
+      $this->model = new $modelname();
+   }
+
+   public function sortContacts() : array {
+      $contacts = $this->model->findAll(); 
+      return $contacts;
+   }
+
+   public function render($contactname) : void {
+	   // perform a joined query on address and contact
+       $contact = $this->model->findByName($contactname);
+       require_once(__DIR__.'\view\contact.php');
+       
+   }
+
+}
+?>

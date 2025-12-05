@@ -1,8 +1,7 @@
 <script src=jquery.js></script>
 
 <script>
-
-
+/*
 function miseajourContact() {
    var txt=""; // debug
    $.ajax({
@@ -21,9 +20,9 @@ function miseajourContact() {
       }
    });
 }
+ */
 </script>
 
- 
 <?php
 $postData=$_POST;
 $statusContact = "";
@@ -33,6 +32,12 @@ $errorMessage = "";
 if (!isset($postData['contactname')) {
    $statusContact="noselected";
    $errorMessage="vous n'avez pas selectionne de contact referent";
+   // instanciates a controller+model single class object
+   $controllername = "contactrefctl";
+   require_once(__DIR__ . '/contactrefctl.php');
+   $controller = new $controllername();
+   $contacts = $controller->findAll();
+
 }
 else {
    $contactname = $postData['contactname'];
@@ -41,7 +46,6 @@ else {
    $loggedUser['contactname'] = $contactname;
    $errorMessage = "";   
 }
-
 ?>
 
 <?php if (!isset($loggedUser['contactname'])) : ?>
@@ -51,7 +55,7 @@ else {
     </div>
     <h2>Veuillez selectionner un contact</h2>
     <form>
-       <select name="contact" id="contact" onchange='miseajourContact()'>
+       <select name="contact" id="contact" ><!--onchange='miseajourContact()'-->
           <?php
             foreach ($contacts as $contact) {
 		    echo "<option value='".

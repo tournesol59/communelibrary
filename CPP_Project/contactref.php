@@ -37,21 +37,26 @@ require_once(__DIR__ . '/controller/Contactrefctl.php');
 var_dump($controllername);
 $controller = new \controller\Contactrefctl($modelname); // yes it works
 
-if (!isset($postData['contactname'])) {
+if (!isset($postData['contact'])) {
    $statusContact="noselected";
-   $errorMessage="vous n'avez pas selectionne de contact referent";
+   $errorMessage="vous n avez pas selectionne de contact referent";
    // use the above defined controller method
    echo "liste de tout les contacts"; // debug
    $contacts = $controller->sortContacts();
-   var_dump($contacts);
+   //var_dump($contacts); // for debug
 
 }
 else {
-   $contactname = $postData['contactname'];
+   $contactname = $postData['contact'];
    // interrogation en base de donnees pour avoir l adresse du contact
    $statusContact = "selected";
-   $loggedUser['contactname'] = $contactname;
-   $_SESSION['user']=['contact' => $contactname];
+   if (isset($loggedUser['login'])) {
+     $loggedUser=['login' => $loggedUser['login'],
+           'contactname' => $contactname];
+   } else {
+	 $loggedUser= ['contactname' => $contactname];
+   }
+   $_SESSION['user']=['contactname' => $contactname];
    $errorMessage = "";   
    // use the above defined controller method
    $controller->render($contactname);
@@ -73,13 +78,13 @@ $contacts = [['id' => 1, 'name' => 'aucun'],
         <?php echo $errorMessage ?>
     </div>
     <h2>Vous pouvez selectionner un contact</h2>
-    <form action="contactref.php">
+    <form action="contactref.php" method="POST">
        <div class="mb-3">
        <select name="contact" id="contact" ><!--onchange='miseajourContact()'-->
           <?php
             foreach ($contacts as $contact) {
 		    echo "<option value='".
-			    $contact['id']."'>".
+			    $contact['name']."'>".
 			    $contact['name'].
 			    "</option>";
             }
@@ -89,9 +94,9 @@ $contacts = [['id' => 1, 'name' => 'aucun'],
        <button type="submit" class="btn btn-primary">Envoyer</button>
     </form>
     <?php endif; ?>
-<?php elseif (isset($_SESSION['user']['contact'])) : ?>
-    <p>Valider pour selectionner ce contact <?php echo$_SESSION['user']['contact'] ?></p>
-    <a href="index.php?p=contactref/render/<?=$_SESSION['user']['contact'] ?>">Afficher coordonnees</a>
-     <?php unset($_SESSION['user']['contact']) ?>
+<?php elseif (isset($_SESSION['user']['contactname'])) : ?>
+    <p>Valider pour selectionner ce contact <?php echo$_SESSION['user']['contactname'] ?></p>
+    <a href="index.php?p=contactref/render/<?=$_SESSION['user']['contactname'] ?>">Afficher coordonnees</a>
+     <?php unset($_SESSION['user']['contactname']) ?>
 <?php endif; ?>
 

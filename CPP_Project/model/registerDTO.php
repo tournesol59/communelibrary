@@ -3,7 +3,7 @@
 public class registerDTO {
 
    public int id;
-   public string lastname;
+   public string name;
    public string email;
    public string publication;
    public string birthdate;
@@ -21,8 +21,8 @@ public class registerDTO {
    }
 
    public function validate() : void {
-      if (isset($_POST['lastname']) && !($_POST['lastname'] == '') {
-         $this->lastname = $_POST['lastname'];
+      if (isset($_POST['name']) && !($_POST['name'] == '') {
+         $this->name = $_POST['name'];
       }
       else {
          $errorMessage = 'You don t have entered a lastname';
@@ -34,7 +34,7 @@ public class registerDTO {
          $errorMessage = 'You don t have entered a mail address';
       }
       if (isset($_POST['publication']) && !($_POST['publication'] == '') {
-         $this->publication = $_POST['lastname'];
+         $this->publication = $_POST['publication'];
       }
       else {
          $errorMessage = 'You don t have entered a personnal emphasis/topic';

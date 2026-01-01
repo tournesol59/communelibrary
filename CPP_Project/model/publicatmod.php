@@ -1,15 +1,14 @@
 <?php
 namespace model;
 
-class contactrefmod {
+class publicatmod {
 	// fred: the following shall be grouped into one class 'xxxmod.php',
 
    private string $db_host = "localhost"; 
    private string $db_name = "usercpp";
    private string $db_user = "root";
    private string $db_passwd = "";
-   public string $table = "user";
-   public string $contactname = "";
+   public string $table = "publicat";
 
 // propriete qui contiendra l instance de connexion
    protected $_connection;
@@ -31,16 +30,24 @@ class contactrefmod {
       }
    }
 
-   public function findAll() : array {
+   public function findAll($pubslug) : array {
       $contacts=[];
       try {
-		 $mode='1';
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, publication FROM '. $this->table.' WHERE contact=:mode';
+         $sql = 'SELECT id, title, slug, thesdate, location FROM '. $this->table;
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
-		 //$query->bindParam('mode', $mode , \PDO::PARAM_INT);
-         $query->execute(array(':mode' => $mode));
-		 $contacts = $query->fetchAll();
-         return $contacts;
+         $query->execute();
+		 $results = $query->fetchAll();
+         $publicates = [];
+ 		 foreach ($results as $result) {
+			 $keywds=str_replace($pubslug, '-', ')(');
+			 $keywds= '('.$keywds.')';
+			 preg_match_all($keywds, $result, $matches);
+			 if (isset($matches[1]) {
+				 /// TBC 28-12-2025
+			    
+			 }
+		 }
+         return $publicates;
 
       } catch (PDOException $exception) {
          echo "Erreur de connexion : " .$exception->getMessage();
@@ -48,13 +55,12 @@ class contactrefmod {
       }
    }
 
-   public function findByName($contactname) : array {
+   public function findBySlug($contactname) : array {
       $contacts=[];
       try {
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, city FROM '. $this->table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
-         $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
-		 //$query->bindParam();
-         $query->execute(array(':contactname' => $contactname));
+         $sql = 'SELECT id, name, email, birthdate, useroption, contact, address, city FROM '. $table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
+         $query = $_connection->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+         $query->execute(['contactname' => $contactname]);
          $contacts = $query->fetchAll();
          if (isset($contacts)) {
             return $contacts[0];  // return a unique result

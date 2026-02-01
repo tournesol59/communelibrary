@@ -1,0 +1,14 @@
+Petit Projet en PHP et JavaScript
+
+++ utiliser le projet 'RecipeHome' (repertoire communelibrary2) comme base pour
+personnaliser les messages d'information juste avant l'envoi d'un formulaire
+
+++ commencer avec un script js contenant un code similaire avec ce qu on a vu en debut de tutoriel
+
+++ 
+
+Projet de demonstration des Design Patterns, en vue d'une presentation
+
+++ utiliser le projet 'symfony-thesis1' pour illustrer le design pattern adapter pour commencer: imaginons que l'entite shematic puisse etre un word ou un jpg et qu'en fonction il soit stocke dans un rep different. Utilité pour le projet: les documents word peuvent etre mis dans un repetoire onedrive, par ex.
+Etat d'avancement? Verifier les relations entre conference, comment, category et shematic. Adapter la classe shematic
+

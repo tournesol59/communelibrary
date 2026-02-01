@@ -1,0 +1,11 @@
+<?php
+echo "<table><tr><td>Titre</td><td>Slug</td><td>Contenu</td><td>Duree</td><td>Image</td></tr>";
+for ($searchresults as $item) {
+    $strout = "<tr><td>".$item['title']."</td>";
+    $strout = $strout."<td>".$item['slug']."</td>";
+    $strout = $strout."<td>".$item['content']."</td>";
+    $strout = $strout."<td>".$item['duration']."</td>";
+    $strout = $strout."<td>".$item['image_path']."</td>";
+    echo $strout;
+}
+?>

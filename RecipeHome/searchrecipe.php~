@@ -1,0 +1,57 @@
+<?php
+$postData = $_POST;
+$statusUser = "";
+$loggedUser = "";
+$errorMessage = "";
+
+if ((!isset($postData['titlekey'])) || (!isset($postData['category']))) {
+   $statusUser = "error";
+   $errorMessage = "Le formulaire doit contenir au moins un mot cle ou une categorie";
+}
+else {
+   $titlekey = $postData['titlekey'];
+   $category = $postData['category'];
+   // instanciates the model
+   $recipemod = new \models\Recipemod();
+   // DEBUG: for the moment, by-pass the database and collect the results as const
+   //$searchresults = $recipemod->findByKeywds($titlekey);
+   $searchresults = [['id' => 1,
+	   'title' => 'Quinoa tomate et riz complet',
+	   'category' => 'plat-principal',
+	   'slug' => 'quinoa-tomate-riz',
+	   'content' => 'lavez les tomates',
+	   'duration' => 45,
+	   'image_path' => 'quinoa.jpg'
+   ]];
+		      '
+}
+?>
+
+<?php if (!isset($loggedUser['insearch'])) : ?>
+       <form action="searchrecipe.php" method="POST">
+       <!-- si message d erreur on affiche -->
+       <?php if (isset($errorMessage)) : ?>
+           <div class="alert alert-danger" role="alert">
+               <?php echo $statusUSer; ?>
+           </div>
+       <?php endif ; ?>
+       <h1>Rechercher des recettes</h1>
+           <div class="mb-3">
+               <label for="titlekey" class="form-label">Mots composant le titre (xx,yy)</label>
+	       <input type="text" class="form-control" id="titlekey" name="titlekey">
+	   </div>
+           <div class="mb-3">
+	       <label for="category" class="form-label">Category</label>
+               <!-- a remplacer par un select -->
+	       <input type="text" class="form-control" id="category" name="category">
+	   </div>
+	   <button type="submit" class="btn btn-primary">Envoyer</button>
+         </form>
+<!-- then follow of our application: do the form to prompt input our keywords -->
+<?php else: ?>
+   <div class="alert alert-success" role="alert">
+       <?php if ($loggedUser['insearch']==="success") {
+          require_once(__DIR__.'/views/recipevue.php');
+       } ?>
+   </div>
+<?php endif; ?>

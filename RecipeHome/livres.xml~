@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<recipes>
+   <recipe>
+      <category>plat-principal</category>
+      <title>Quinoa, riz et tomates</title>
+   </recipe>
+   <recipe>
+      <category>plat-principal</category>
+      <title>Poulet et gnoccis</title>
+   </recipe>
+   <recipe>
+      <category>entree</category>
+      <title>avocat mayonnaise</title>
+   </recipe>
+   <recipe>
+      <category>plat-principal</category>
+      <title>Haricots recuits avec oignons</title>
+   </recipe>
+</recipes>   

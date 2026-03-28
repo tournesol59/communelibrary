@@ -13,7 +13,7 @@ class Contactrefctl extends Controllerabs {
    protected $model;
 
    public function __construct($modelname) {     // nothing
-      var_dump(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
+      //var_dump(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
       require_once(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
       // $this->model = new \model\contactrefmod(); // does not work
       $modelname = '\\model\\'.$modelname;

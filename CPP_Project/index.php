@@ -25,10 +25,10 @@ require_once(__DIR__ . '/functions.php');
        <!-- has a contact been selected in contactref.php ? --> 
        <!-- no, we include the page contactref.php which display the form and does conditional treatment --> 
 	  <?php require_once(__DIR__.'/contactref.php'); ?>
-       <?php else: ?>
+      <?php else: ?>
          <div class="alert alert-success" role="alert">
             <p>Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
-	    <p>Votre contact est <?php echo $loggedUser['contactname']; ?></p>
+			<p>Votre contact est <?php echo $loggedUser['contactname']; ?></p>
 	 </div>
             <?php
                  $requestUri = $_GET['p'];
@@ -38,7 +38,7 @@ require_once(__DIR__ . '/functions.php');
                  $arrayUri = str_explode($replacedUri, '/');
 		 $controllername = ucfirst(arrayUri[0]);
 		 echo "la chaine traitee".PHP_EOL;
-		 var_dump($arrayUri);
+		 //var_dump($arrayUri); //debug
             ?>
        <?php endif; ?>
    <?php elseif((isset($statusUser)) && ($statusUser=="error")) : ?>

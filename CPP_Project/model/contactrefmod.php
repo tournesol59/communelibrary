@@ -51,6 +51,7 @@ class contactrefmod {
    public function findByName($contactname) : array {
       $contacts=[];
       try {
+		 echo "contactname: " .$contactname;
          $sql = 'SELECT id, name, email, birthdate, useroption, contact, city FROM '. $this->table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
 		 //$query->bindParam();

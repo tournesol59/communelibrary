@@ -27,9 +27,11 @@ else {
       $db_name = "usercpp";
       $db_user = "root";
       $db_passwd = "";
-      echo 'email entre: '.$postemail.' password:: '.$postpasswd;
+      //echo 'email entre: '.$postemail.' password:: '.$postpasswd; // debug
       $_connection = new \PDO("mysql:host=".$host. ";dbname=" .$db_name, $db_user, $db_passwd);
       $_connection->exec("set names utf8");
+	  
+	  echo "connection set before query with param email=".$postemail." ";
       $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
       $sql = "SELECT * FROM user WHERE email='".$postemail."'";

@@ -34,14 +34,14 @@ $modelname = 'contactrefmod';
 $controllername = '\\controller\\Contactrefctl';
 require_once(__DIR__ . '/controller/Controllerabs.php');
 require_once(__DIR__ . '/controller/Contactrefctl.php');
-var_dump($controllername);
+//var_dump($controllername); //debug
 $controller = new \controller\Contactrefctl($modelname); // yes it works
 
 if (!isset($postData['contact'])) {
    $statusContact="noselected";
    $errorMessage="vous n avez pas selectionne de contact referent";
    // use the above defined controller method
-   echo "liste de tout les contacts"; // debug
+   //echo "liste de tout les contacts"; // debug
    $contacts = $controller->sortContacts();
    //var_dump($contacts); // for debug
 

@@ -1,14 +1,29 @@
 <?php
-$postData=$_POST;
+$postData=$_POST; //deprecated
 $statusUser = "";
 $loggedUser="";
 $errorMessage="";
 
+// WAS
+/*
 if ((!isset($postData['name'])) || (!isset($postData['email'])) || (!isset($postData['publication'])) || (!isset($postData['birthdate'])) || (!isset($postData['cityaddress'])) || (!isset($postData['option'])) || (!isset($postData['password'])) || (!isset($postData['repassword']))) {
    $statusUser = "error";
    $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
 }
-else {
+*/
+// IS
+require_once(__DIR__ .'\model\registerDTO.php');
+$registerDTO = new \model\registerDTO();
+// instanciates a controller+model single class object, using the php object layer
+$modelname = 'registermod';
+$controllername = '\\controller\\Registerctl';
+require_once(__DIR__ . '/controller/Controllerabs.php');
+require_once(__DIR__ . '/controller/Registerctl.php');
+var_dump($controllername);
+$controller = new \controller\Registerctl($modelname); // yes it works
+
+// WAS
+/*
    $name = $postData['name'];
    $email = $postData['email'];
    $site = $postData['publication'];
@@ -24,6 +39,23 @@ else {
       $db_name = "usercpp";
       $db_user = "root";
       $db_passwd = "";
+ */
+ // IS
+ $errorMessage = $registerDTO->errorMessage;
+ if ($errorMessage != '') {
+	 // re afficher le formulaire
+	 $statusUser = "error";
+	 $loggedUser=['login' => ''];
+ }
+ else {
+	 $statusUser = "connected";
+	 // the save operation:
+	 $controller->saveUser($registerDTO);
+	 // the branch conditional variable:
+	 $loggedUser=array('login' => $registerDTO->email);
+	 $errorMessage = "";
+	 var_dump($loggedUser);
+   }
       /*
        * Try db tests later
        *
@@ -56,32 +88,25 @@ else {
      } 
       * 
       **/
-     echo "the database tests cannot be run with this version of the code";
-     $statusUser = "connected";
-     $loggedUser= ['login' => $email];
-   }
-   else {	   
-     $statusUser = "error";
-     $errorMessage="Veuillez entrer deux mots de passe identiques";
-   }
+
 	//********** connection to db
  //  mysqli_connect("localhost","root","root");
  //  mysqli_select_db("usercpp");
  //  $res=mysql_query("SELECT * FROM users ORDER BY name WHERE name="+$postname);
-}
 ?>
 
 <!-- then follow of our application : redo the form index.php if the user is not authenticated-->
 
 <?php if (!isset($loggedUser['login'])) : ?>
         <form action="index.php" method="POST">
+		
 	<!-- si message d erreur on affiche -->
 	<?php if (isset($errorMessage)) : ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $statusUser; ?>
 	    </div>
         <?php endif ; ?>
-        <h1>Contactez nous</h1>
+        <h2>Contactez nous</h2>
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="name" name="name">

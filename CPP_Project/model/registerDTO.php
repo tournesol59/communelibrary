@@ -1,6 +1,6 @@
 <?php
 
-public class registerDTO {
+class registerDTO {
 
    public int id;
    public string name;

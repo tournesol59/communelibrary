@@ -8,7 +8,7 @@ class publicatmod {
    private string $db_name = "usercpp";
    private string $db_user = "root";
    private string $db_passwd = "";
-   public string $table = "publicat";
+   public string $table = "publication";
 
 // propriete qui contiendra l instance de connexion
    protected $_connection;
@@ -30,10 +30,9 @@ class publicatmod {
       }
    }
 
-   public function findAll($pubslug) : array {
-      $contacts=[];
+   public function findAll() : array {
       try {
-         $sql = 'SELECT id, title, slug, thesdate, location FROM '. $this->table;
+         $sql = 'SELECT id, userid, title, slug, publicdate, siteurl FROM '. $this->table;
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
          $query->execute();
 		 $results = $query->fetchAll();
@@ -41,10 +40,10 @@ class publicatmod {
  		 foreach ($results as $result) {
 			 $keywds=str_replace($pubslug, '-', ')(');
 			 $keywds= '('.$keywds.')';
-			 preg_match_all($keywds, $result, $matches);
+			 preg_match_all($keywds, $result['title'], $matches);
 			 if (isset($matches[1]) {
-				 /// TBC 28-12-2025
-			    
+				 /// completed
+				 $publicates->append($result);
 			 }
 		 }
          return $publicates;
@@ -55,15 +54,16 @@ class publicatmod {
       }
    }
 
-   public function findBySlug($contactname) : array {
+   public function findBySlug($pubslug) : array {
       $contacts=[];
       try {
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, address, city FROM '. $table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
+         $sql = 'SELECT id, userid, title, slug, publicdate, siteurl FROM '. $this->table
+		     .' WHERE slug=:slug';
          $query = $_connection->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-         $query->execute(['contactname' => $contactname]);
-         $contacts = $query->fetchAll();
-         if (isset($contacts)) {
-            return $contacts[0];  // return a unique result
+         $query->execute(['slug' => $pubslug]);
+         $publicates = $query->fetchAll();
+         if (isset($publicates)) {
+            return $publicates;
          }
          else {
             return [];

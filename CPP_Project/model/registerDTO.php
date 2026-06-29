@@ -1,75 +1,78 @@
 <?php
 
+namespace model;
+
 class registerDTO {
 
-   public int id;
-   public string name;
-   public string email;
-   public string publication;
-   public string birthdate;
-   public string useroption;
-   public string password;
-   public string contact;
-   public string city;
+   public int $id;
+   public string $uname;
+   public string $email;
+   public string $publication;
+   public string $birthdate;
+   public string $useroption;
+   public string $password;
+   public string $contact;
+   public string $city;
 
    // validation var
    public string $errorMessage;
 
-   public function __construct() : void {
-      $errorMessage = '';
+   public function __construct() {
+      $this->errorMessage = '';
+      var_dump($_POST['uname']);
       $this->validate();
    }
 
    public function validate() : void {
-      if (isset($_POST['name']) && !($_POST['name'] == '') {
-         $this->name = $_POST['name'];
+      if ((isset($_POST['uname'])) && !($_POST['uname'] == '')) {
+         $this->uname = $_POST['uname'];
       }
       else {
-         $errorMessage = 'You don t have entered a lastname';
+         $this->errorMessage = 'You don t have entered a lastname';
       }
-      if (isset($_POST['email']) && !($_POST['email'] == '') {
+      if (isset($_POST['email']) && !($_POST['email'] == '')) {
          $this->email = $_POST['email'];
       }
       else {
-         $errorMessage = 'You don t have entered a mail address';
+         $this->errorMessage = 'You don t have entered a mail address';
       }
-      if (isset($_POST['publication']) && !($_POST['publication'] == '') {
+      if ((isset($_POST['publication'])) && !($_POST['publication'] == '')) {
          $this->publication = $_POST['publication'];
       }
       else {
-         $errorMessage = 'You don t have entered a personnal emphasis/topic';
+         $this->errorMessage = 'You don t have entered a personnal emphasis/topic';
       }
-      if (isset($_POST['birthdate']) && !($_POST['birthdate'] == '') {
+      if ((isset($_POST['birthdate'])) && !($_POST['birthdate'] == '')) {
          $this->birthdate = $_POST['birthdate'];
       }
       else {
-         $errorMessage = 'You don t have entered a lastname';
+         $this->errorMessage = 'You don t have entered a lastname';
       }
-      if (isset($_POST['option']) && !($_POST['option'] == '') {
+      if ((isset($_POST['option'])) && !($_POST['option'] == '')) {
          $this->option = $_POST['option'];
       }
       else {
-         $errorMessage = 'You don t have entered your master option';
+         $this->errorMessage = 'You don t have entered your master option';
       }
-      if (isset($_POST['password']) && !($_POST['password'] == '') && isset($_POST['repassword']) && !($_POST['repassword'] == '') && ($_POST'[password'] == $_PST['repassword']) )  {
+      if ((isset($_POST['password'])) && !($_POST['password'] == '') && (isset($_POST['repassword'])) && !($_POST['repassword'] == '') && ($_POST['password'] == $_POST['repassword']) )  {
          $this->password = $_POST['password'];
       }
       else {
-         $errorMessage = 'You don t have entered two matching password';
+         $this->errorMessage = 'You don t have entered two matching password';
       }
-      if (isset($_POST['contact']) && !($_POST['contact'] == '') {
+      if ((isset($_POST['contact'])) && !($_POST['contact'] == '')) {
          $this->contact = $_POST['contact'];
       }
       else {
-         $errorMessage = 'You don t have selected if you want to be the contact role';
+         $this->errorMessage = 'You don t have selected if you want to be the contact role';
       }
-      if (isset($_POST['city']) && !($_POST['city'] == '') {
-         $this->city = $_POST['city'];
+      if ((isset($_POST['cityaddress'])) && !($_POST['cityaddress'] == '')) {
+         $this->city = $_POST['cityaddress'];
       }
       else {
-         $errorMessage = 'You don t have entered your address town';
+         $this->errorMessage = 'You don t have entered your address town';
       }
    }
 
-   }
+}
 ?>

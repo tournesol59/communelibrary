@@ -13,7 +13,9 @@ class Registerctl extends Controllerabs {
    protected $model;
 
    public function __construct($modelname) {     // nothing
+      echo "<pre>";
       var_dump(str_replace("controller","model", __DIR__.'\registermod.php'));
+      echo "</pre>";
       require_once(str_replace("controller","model", __DIR__.'\registermod.php'));
       // $this->model = new \model\registermod(); // does not work
       $modelname = '\\model\\'.$modelname;

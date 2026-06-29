@@ -1,19 +1,29 @@
 <?php
 $postData=$_POST;
-$statusUser = "";
+//$statusUser = (isset($statusUser)) ? $statusUser : $_SESSION['status']; 
+$statusUser = (isset($_SESSION['status'])) ? $_SESSION['status'] : ""; 
+// debug
 $loggedUser = "";
 $errorMessage = "";
+//if (!defined('ROOT')) {
+//   define('ROOT', str_replace('login.php', '', $_SERVER['SCRIPT_FILENAME']));
+//}
 
-if ((!isset($postData['email'])) || (!isset($postData['password']))) {
+if ((!isset($postData['email'])) || (!isset($postData['password']))
+    || ($postData['email'] === '') || ($postData['password'] === '')) {
    if ($statusUser == "") {
 		// first default try to connect: redirect to login
+      echo "no email or password entered";
       $statusUser = "error";
       $errorMessage = "Veuillez entrer vos identifiants de connexion";
    }
    elseif ($statusUser == "error") {
+      echo "no email or password entered for the second time";
       $statusUser = "seconderror";
       $errorMessage = "Vous devez d abord vous enregistrer";
    }
+   $_SESSION['status'] = $statusUser;
+   echo "session: ".$_SESSION['status']; // debug
 }
 else {
    $postemail = $postData['email'];
@@ -46,14 +56,19 @@ else {
    }
    $icount = 0;
    while (isset($result[$icount])) {
-      if ($result[$icount]['email'] === $postemail) { // email, lastname==result['name']
+      if (($result[$icount]['email'] === $postemail) && 
+          ($result[$icount]['password'] === $postpasswd)) {
+             // email, lastname==result['name']
          $statusUser = "connected";
-         $loggedUser = ['login' => $postemail];
+	      $loggedUser = ['login' => $postemail];
+	      $_SESSION['user'] = $postemail;
          $icount += 1;
       }
    }
    // normally icount === 1
-  
+   // save into session the status of the user
+     $_SESSION['status'] = $statusUser;
+     echo "session: ".$_SESSION['status']; // debug
   /* if no database present:
    *
          $statusUser = "connected";
@@ -67,8 +82,8 @@ else {
 	<!-- si message d erreur on affiche -->
     <?php if (isset($errorMessage)) : ?>
         <div class="alert alert-danger" role="alert">
-	<?php echo $statusUser; ?>
-         </div>
+	         <?php echo $statusUser; ?>
+        </div>
      <?php endif ; ?>
         <h1>Entrez vos identifiants</h1>
             <div class="mb-3">

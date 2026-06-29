@@ -3,6 +3,9 @@ $postData=$_POST;
 $statusUser = "";
 $loggedUser = "";
 $errorMessage = "";
+if (!defined('ROOT')) {
+   define('ROOT', str_replace('login.php', '', $_SERVER['SCRIPT_FILENAME']));
+}
 
 if ((!isset($postData['email'])) || (!isset($postData['password']))) {
    if ($statusUser == "") {
@@ -27,9 +30,11 @@ else {
       $db_name = "usercpp";
       $db_user = "root";
       $db_passwd = "";
-      echo 'email entre: '.$postemail.' password:: '.$postpasswd;
+      //echo 'email entre: '.$postemail.' password:: '.$postpasswd; // debug
       $_connection = new \PDO("mysql:host=".$host. ";dbname=" .$db_name, $db_user, $db_passwd);
       $_connection->exec("set names utf8");
+	  
+	  echo "connection set before query with param email=".$postemail." ";
       $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
       $sql = "SELECT * FROM user WHERE email='".$postemail."'";
@@ -46,7 +51,8 @@ else {
    while (isset($result[$icount])) {
       if ($result[$icount]['email'] === $postemail) { // email, lastname==result['name']
          $statusUser = "connected";
-         $loggedUser = ['login' => $postemail];
+	 $loggedUser = ['login' => $postemail];
+	 $_SESSION['user'] = $postemail;
          $icount += 1;
       }
    }

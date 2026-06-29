@@ -34,7 +34,7 @@ $modelname = 'contactrefmod';
 $controllername = '\\controller\\Contactrefctl';
 require_once(__DIR__ . '/controller/Controllerabs.php');
 require_once(__DIR__ . '/controller/Contactrefctl.php');
-//var_dump($controllername); //debug
+var_dump($controllername); //debug
 $controller = new \controller\Contactrefctl($modelname); // yes it works
 
 if (!isset($postData['contact'])) {

@@ -13,24 +13,34 @@ class Contactrefctl extends Controllerabs {
    protected $model;
 
    public function __construct($modelname) {     // nothing
-      var_dump(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
+	   //var_dump(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
+     if (!defined('ROOT')) {
+	     define('ROOT', str_replace('contactref.php', '', $_SERVER['SCRIPT_FILENAME']));
+// debug	     
+//      echo '<pre>';
+//      echo " ". $_SERVER['SCRIPT_FILENAME'];
+//      echo " ".ROOT;
+//      echo '</pre>';
+
+}
+
       require_once(str_replace("controller","model", __DIR__.'\contactrefmod.php'));
       // $this->model = new \model\contactrefmod(); // does not work
       $modelname = '\\model\\'.$modelname;
       var_dump($modelname);
       $this->model = new $modelname();
+
    }
 
    public function sortContacts() : array {
-      $contacts = $this->model->findAll();
-      var_dump($contacts); 
+      $contacts = $this->model->findAll(); 
       return $contacts;
    }
 
    public function render($contactname) : void {
 	   // perform a joined query on address and contact
        $contact = $this->model->findByName($contactname);
-       require_once(__DIR__.'\view\contact.php');
+       require_once(ROOT.'\view\contact.php');
        
    }
 

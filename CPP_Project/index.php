@@ -1,6 +1,13 @@
 <?php
 //require_once(__DIR__ . '/variables.php');
 require_once(__DIR__ . '/functions.php');
+session_start();
+if (!isset($_SESSION['status'])) {
+    $_SESSION['status'] = "";
+}
+if (!defined('ROOT')) {
+   define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +31,7 @@ require_once(__DIR__ . '/functions.php');
        <?php if (!isset($loggerUser['contactname'])) : ?>  
        <!-- has a contact been selected in contactref.php ? --> 
        <!-- no, we include the page contactref.php which display the form and does conditional treatment --> 
-	  <?php require_once(__DIR__.'/contactref.php'); ?>
+	     <?php require_once(__DIR__.'/contactref.php'); ?>
       <?php else: ?>
          <div class="alert alert-success" role="alert">
             <p>Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !</p>

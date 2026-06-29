@@ -34,12 +34,12 @@ class contactrefmod {
    public function findAll() : array {
       $contacts=[];
       try {
-		 $mode='1';
+		   $mode='1';
          $sql = 'SELECT id, name, email, birthdate, useroption, contact, publication FROM '. $this->table.' WHERE contact=:mode';
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
-		 //$query->bindParam('mode', $mode , \PDO::PARAM_INT);
+            //$query->bindParam('mode', $mode , \PDO::PARAM_INT);
          $query->execute(array(':mode' => $mode));
-		 $contacts = $query->fetchAll();
+		   $contacts = $query->fetchAll();
          return $contacts;
 
       } catch (PDOException $exception) {
@@ -52,7 +52,7 @@ class contactrefmod {
       $contacts=[];
       try {
 		 echo "contactname: " .$contactname;
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, city FROM '. $this->table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
+         $sql = 'SELECT user.id as id, user.name as name, email, birthdate, useroption, contact, city FROM '. $this->table .' as user LEFT JOIN address as address ON '.$this->table.'.address = address.id WHERE name= :contactname';
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
 		 //$query->bindParam();
          $query->execute(array(':contactname' => $contactname));

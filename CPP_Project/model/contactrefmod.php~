@@ -34,10 +34,12 @@ class contactrefmod {
    public function findAll() : array {
       $contacts=[];
       try {
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, address FROM '. $this->table.' WHERE contact=true';
+		 $mode='1';
+         $sql = 'SELECT id, name, email, birthdate, useroption, contact, publication FROM '. $this->table.' WHERE contact=:mode';
          $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
-         $query->execute();
-         $contacts = $query->fetchAll();
+		 //$query->bindParam('mode', $mode , \PDO::PARAM_INT);
+         $query->execute(array(':mode' => $mode));
+		 $contacts = $query->fetchAll();
          return $contacts;
 
       } catch (PDOException $exception) {
@@ -49,9 +51,11 @@ class contactrefmod {
    public function findByName($contactname) : array {
       $contacts=[];
       try {
-         $sql = 'SELECT id, name, email, birthdate, useroption, contact, address, city FROM '. $table .' LEFT JOIN address ON '.$this->table.'.address = address.id WHERE name= :contactame';
-         $query = $_connection->prepare($sql, [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-         $query->execute(['contactname' => $contactname]);
+		 echo "contactname: " .$contactname;
+         $sql = 'SELECT user.id as id, name, email, birthdate, useroption, contact, city FROM '. $this->table .' as user LEFT JOIN address as address ON '.$this->table.'.address = address.id WHERE name= :contactname';
+         $query = $this->_connection->prepare($sql, [\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY]);
+		 //$query->bindParam();
+         $query->execute(array(':contactname' => $contactname));
          $contacts = $query->fetchAll();
          if (isset($contacts)) {
             return $contacts[0];  // return a unique result

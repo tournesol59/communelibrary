@@ -1,30 +1,35 @@
 <?php
 $postData=$_POST; //deprecated
-$statusUser = "";
+$statusUser = (isset($_SESSION['status'])) ? $_SESSION['status'] : ""; 
+// debug
+//$statusUser = "";
 $loggedUser="";
 $errorMessage="";
 
 // WAS
 /*
-if ((!isset($postData['name'])) || (!isset($postData['email'])) || (!isset($postData['publication'])) || (!isset($postData['birthdate'])) || (!isset($postData['cityaddress'])) || (!isset($postData['option'])) || (!isset($postData['password'])) || (!isset($postData['repassword']))) {
+if ((!isset($postData['uname'])) || (!isset($postData['email'])) || (!isset($postData['publication'])) || (!isset($postData['birthdate'])) || (!isset($postData['cityaddress'])) || (!isset($postData['option'])) || (!isset($postData['password'])) || (!isset($postData['repassword']))) {
    $statusUser = "error";
    $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
 }
 */
-// IS
-require_once(__DIR__ .'\model\registerDTO.php');
-$registerDTO = new \model\registerDTO();
-// instanciates a controller+model single class object, using the php object layer
-$modelname = 'registermod';
-$controllername = '\\controller\\Registerctl';
-require_once(__DIR__ . '/controller/Controllerabs.php');
-require_once(__DIR__ . '/controller/Registerctl.php');
-var_dump($controllername);
-$controller = new \controller\Registerctl($modelname); // yes it works
+// IS: first a rapid validation on two fields to see if there are dara submitted
+if ((isset($postData['uname'])) || (isset($postData['email']))) 
+{ 
+   require_once(__DIR__ .'\model\registerDTO.php');
+   $registerDTO = new model\registerDTO();
+   $registerDTO->validate();
+   // instanciates a controller+model single class object, using the php object layer
+   $modelname = 'registermod';
+   $controllername = '\\controller\\Registerctl';
+   require_once(__DIR__ . '/controller/Controllerabs.php');
+   require_once(__DIR__ . '/controller/Registerctl.php');
+   var_dump($controllername);
+   $controller = new controller\Registerctl($modelname); // yes it works
 
 // WAS
 /*
-   $name = $postData['name'];
+   $name = $postData['uname'];
    $email = $postData['email'];
    $site = $postData['publication'];
    $birthdate = $postData['birthdate'];
@@ -41,20 +46,21 @@ $controller = new \controller\Registerctl($modelname); // yes it works
       $db_passwd = "";
  */
  // IS
- $errorMessage = $registerDTO->errorMessage;
- if ($errorMessage != '') {
-	 // re afficher le formulaire
-	 $statusUser = "error";
-	 $loggedUser=['login' => ''];
- }
- else {
-	 $statusUser = "connected";
-	 // the save operation:
-	 $controller->saveUser($registerDTO);
-	 // the branch conditional variable:
-	 $loggedUser=array('login' => $registerDTO->email);
-	 $errorMessage = "";
-	 var_dump($loggedUser);
+    $errorMessage = $registerDTO->errorMessage;
+    if ($errorMessage != '') {
+	    // re afficher le formulaire
+	    $statusUser = "errorregister";
+	    $loggedUser=['login' => ''];
+    }
+    else {
+	    $statusUser = "connected";
+	    // the save operation:
+	    $controller->saveUser($registerDTO);
+	    // the branch conditional variable:
+	    $loggedUser = array('login' => $registerDTO->email);
+	    $errorMessage = "";
+	    var_dump($loggedUser);
+    }
    }
       /*
        * Try db tests later
@@ -97,19 +103,19 @@ $controller = new \controller\Registerctl($modelname); // yes it works
 
 <!-- then follow of our application : redo the form index.php if the user is not authenticated-->
 
-<?php if (!isset($loggedUser['login'])) : ?>
-        <form action="index.php" method="POST">
+<?php if ((!isset($loggedUser['login'])) || ($loggedUser['login'] === '')): ?>
+        <form action="register.php" method="POST">
 		
 	<!-- si message d erreur on affiche -->
 	<?php if (isset($errorMessage)) : ?>
             <div class="alert alert-danger" role="alert">
-                <?php echo $statusUser; ?>
+                <?php echo $errorMessage; ?>
 	    </div>
         <?php endif ; ?>
         <h2>Contactez nous</h2>
             <div class="mb-3">
-                <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <label for="uname" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="uname" name="uname">
             </div>
 	    <div class="mb-3">
                 <label for="email" class="form-label">Email</label>

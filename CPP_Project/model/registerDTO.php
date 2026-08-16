@@ -60,12 +60,15 @@ class registerDTO {
       else {
          $this->errorMessage = 'You don t have entered two matching password';
       }
-      if ((isset($_POST['contact'])) && !($_POST['contact'] == '')) {
-         $this->contact = $_POST['contact'];
+      /*
+      if ((isset($_POST['contact1']))) { //&& !($_POST['contact1'] == '')) {
+         $this->contact = $_POST['contact1'];
       }
       else {
          $this->errorMessage = 'You don t have selected if you want to be the contact role';
       }
+       */
+      $this->contact = "true";// always because checkbox dos not work for the moment
       if ((isset($_POST['cityaddress'])) && !($_POST['cityaddress'] == '')) {
          $this->city = $_POST['cityaddress'];
       }

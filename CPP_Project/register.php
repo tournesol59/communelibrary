@@ -45,20 +45,28 @@ if ((isset($postData['uname'])) || (isset($postData['email'])))
       $db_user = "root";
       $db_passwd = "";
  */
- // IS
+   // IS
+   $contactarr = $postData['contact1'];
+   echo "<br>";
+    foreach ($contactarr as $cchoice) {
+       echo "wanted to be contact: ".$cchoice."<br>";
+    }
     $errorMessage = $registerDTO->errorMessage;
     if ($errorMessage != '') {
 	    // re afficher le formulaire
 	    $statusUser = "errorregister";
 	    $loggedUser=['login' => ''];
+	    echo "still some errors of inputs non sanitized";
     }
     else {
 	    $statusUser = "connected";
 	    // the save operation:
+	    echo "registration just before saved into db";
 	    $controller->saveUser($registerDTO);
 	    // the branch conditional variable:
 	    $loggedUser = array('login' => $registerDTO->email);
 	    $errorMessage = "";
+	    echo "registered user";
 	    var_dump($loggedUser);
     }
    }
@@ -153,7 +161,8 @@ if ((isset($postData['uname'])) || (isset($postData['email'])))
                 <textarea class="form-control" placeholder="page perso" id="publication" name="publication"></textarea>
 	    </div>
             <div class="mb-3">
-		 <input type="checkbox" id="contact1" name="contact1" value="true" checked>
+		 <input type="checkbox" id="contact1" name="contact1[]" value="true" checked>
+		 <input type="checkbox" id="contact1" name="contact1[]" value="false">
                  <label for="contact1">Je suis d accord pour etre un contact</label><br>
             </div>      
 	  <button type="submit" class="btn btn-primary">Envoyer</button>

@@ -39,7 +39,12 @@ class registermod {
       $sql = "INSERT INTO user (name,email,publication,birthdate,useroption,password) VALUES(?,?,?,?,?,?)";
       var_dump($sql);
       $query = $this->_connection->prepare($sql);
-      $query->bindValue($dto->uname, $dto->email, $dto->site, $dto->birthdate, $dto->option, $dto->password);
+      $query->bindValue(1, $dto->uname);
+      $query->bindValue(2, $dto->email);
+      $query->bindValue(3, $dto->publication);
+      $query->bindValue(4, $dto->birthdate);
+      $query->bindValue(5, $dto->option);
+      $query->bindValue(6, $dto->password);
       $query->execute();
       $lastuserid = $_connection->lastInsertId();
      } catch (PDOException $exception) {

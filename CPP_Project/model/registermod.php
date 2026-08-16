@@ -46,7 +46,7 @@ class registermod {
       $query->bindValue(5, $dto->option);
       $query->bindValue(6, $dto->password);
       $query->execute();
-      $lastuserid = $_connection->lastInsertId();
+      $lastuserid = $this->_connection->lastInsertId();
      } catch (PDOException $exception) {
       echo "Erreur de connexion : " .$exception->getMessage();
      }

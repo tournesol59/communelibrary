@@ -1,11 +1,25 @@
 CREATE DATABASE usercpp;
-CREATE TABLE users (
-   name VARCHAR(80),
-   firstname VARCHAR(80),
+CREATE TABLE user (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR(40),
+   email VARCHAR(40),
    publication VARCHAR(255),
    birthdate DATE,
-   option3a VARCHAR(10),
-   passwd VARCHAR(80),
-   repasswd VARCHAR(80)
+   useroption VARCHAR(10),
+   password VARCHAR(255),
+   contact BOOLEAN
 );
+
+CREATE TABLE IF NOT EXISTS publication(
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   userid INT,
+   title VARCHAR(255),
+   slug VARCHAR(120),
+   epublic BOOLEAN,
+   publicdate DATE,
+   siteurl VARCHAR(255)
+);
+
+ALTER TABLE publication ADD CONSTRAINT FK_publication_user FOREIGN KEY(userid) REFERENCES user (id) ON DELETE CASCADE;
+
 

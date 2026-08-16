@@ -21,10 +21,16 @@ class Registerctl extends Controllerabs {
       $modelname = '\\model\\'.$modelname;
       var_dump($modelname);
       $this->model = new $modelname();
+      echo "controller instanciated";
    }
 
    public function saveUser($registDTO) : void {
-      $this->model->save($registDTO); 
+      echo "<pre>";
+	   var_dump($registDTO); 
+      echo "</pre>";
+
+      $this->model->save($registDTO);
+      echo "saved user";
    }
 
 }

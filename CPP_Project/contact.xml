@@ -1,0 +1,15 @@
+<contact>
+   <item>
+       <name>Olivier</name>
+       <email>olivier.simon@centraliens.net</email>
+   </item>
+   <item>
+	<name>Antoine</name>
+	<email>antoine.fressancourt@centraliens.net</email>
+   </item>
+   <item>
+	<name>Mickael</name>
+	<email>mickael.carre@centraliens.net</email>
+   </item>
+   <!-- fred: on fera cette liste Xml en dur pour tous les contacts referent pour commencer -->
+</contact>

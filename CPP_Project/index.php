@@ -1,0 +1,64 @@
+<?php
+//require_once(__DIR__ . '/variables.php');
+require_once(__DIR__ . '/functions.php');
+session_start();
+if (!isset($_SESSION['status'])) {
+    $_SESSION['status'] = "";
+}
+if (!defined('ROOT')) {
+   define('ROOT', str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']));
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de confirmation du contact</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <div class="container">
+    <?php require_once(__DIR__ . '/header.php'); ?>
+<!-- ?php if (!isset(loggedUser['login'])) : ?-->
+<!-- no , we include the page login.php which does the conditional treatment -->
+   <?php require_once(__DIR__ . '/login.php'); ?>
+
+   <?php if (isset($loggedUser['login'])) : ?>
+   <!-- the identification has established --> 
+       <?php if (!isset($loggerUser['contactname'])) : ?>  
+       <!-- has a contact been selected in contactref.php ? --> 
+       <!-- no, we include the page contactref.php which display the form and does conditional treatment --> 
+	     <?php require_once(__DIR__.'/contactref.php'); ?>
+      <?php else: ?>
+         <div class="alert alert-success" role="alert">
+            <p>Bonjour <?php echo $loggedUser['login']; ?> et bienvenue sur le site !</p>
+			<p>Votre contact est <?php echo $loggedUser['contactname']; ?></p>
+	 </div>
+            <?php
+                 $requestUri = $_GET['p'];
+                 $pattern3 = '([a-z]+)\/([a-z]+)\/([a-z]+)';
+                 $replacement= '${1}ctl\/${2}\/${3}';
+                 $replacedUri = preg_replace($pattern3, $replacement, $requestUri);
+                 $arrayUri = str_explode($replacedUri, '/');
+		 $controllername = ucfirst(arrayUri[0]);
+		 echo "la chaine traitee".PHP_EOL;
+		 //var_dump($arrayUri); //debug
+            ?>
+       <?php endif; ?>
+   <?php elseif((isset($statusUser)) && ($statusUser=="error")) : ?>
+	  <!-- stubbed for the moment => always login -->
+	  <?php require_once(__DIR__.'/login.php'); ?>
+   <?php elseif((isset($statusUser)) && ($statusUser=="seconderror")) : ?>
+          <!-- no login? => register -->
+          <?php require_once(__DIR__.'/register.php'); ?> 
+   <?php endif; ?>
+ </div>
+
+  <!-- inclusion du bas de page du site -->
+   <?php require_once(__DIR__ . '/footer.php'); ?>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<?php
+$postData=$_POST; //deprecated
+$statusUser = (isset($_SESSION['status'])) ? $_SESSION['status'] : ""; 
+// debug
+//$statusUser = "";
+$loggedUser="";
+$errorMessage="";
+
+// WAS
+/*
+if ((!isset($postData['uname'])) || (!isset($postData['email'])) || (!isset($postData['publication'])) || (!isset($postData['birthdate'])) || (!isset($postData['cityaddress'])) || (!isset($postData['option'])) || (!isset($postData['password'])) || (!isset($postData['repassword']))) {
+   $statusUser = "error";
+   $errorMessage="Le formulaire nom et prenom doit etre rempli pour chaque champ";
+}
+*/
+// IS: first a rapid validation on two fields to see if there are dara submitted
+if ((isset($postData['uname'])) || (isset($postData['email']))) 
+{ 
+   require_once(__DIR__ .'\model\registerDTO.php');
+   $registerDTO = new model\registerDTO();
+   $registerDTO->validate();
+   // instanciates a controller+model single class object, using the php object layer
+   $modelname = 'registermod';
+   $controllername = '\\controller\\Registerctl';
+   require_once(__DIR__ . '/controller/Controllerabs.php');
+   require_once(__DIR__ . '/controller/Registerctl.php');
+   var_dump($controllername);
+   $controller = new controller\Registerctl($modelname); // yes it works
+
+// WAS
+/*
+   $name = $postData['uname'];
+   $email = $postData['email'];
+   $site = $postData['publication'];
+   $birthdate = $postData['birthdate'];
+   $option = $postData['option'];
+   $password = $postData['password'];
+   $repassword = $postData['repassword'];
+   $cityaddress = $postData['cityaddress'];
+   $contact1 = $postData['contact1'];
+   $lastuserid = 1; // set in the following insert operation
+   if ($password === $repassword) {  // fred do other sanitizer in the future
+      $host = "localhost";
+      $db_name = "usercpp";
+      $db_user = "root";
+      $db_passwd = "";
+ */
+   // IS
+    $contactarr = $postData['contact1'];
+    foreach ($contactarr as $cchoice) {
+       echo "wanted to be contact: ".$cchoice."<br>";
+    }
+    $errorMessage = $registerDTO->errorMessage;
+    if ($errorMessage != '') {
+	    // re afficher le formulaire
+	    $statusUser = "errorregister";
+	    $loggedUser=['login' => ''];
+	    echo "still some errors of inputs non sanitized";
+    }
+    else {
+	    $statusUser = "connected";
+	    // the save operation:
+	    echo "registration just before saved into db";
+	    $controller->saveUser($registerDTO);
+	    // the branch conditional variable:
+	    $loggedUser = array('login' => $registerDTO->email);
+	    $errorMessage = "";
+	    echo "registered user";
+	    var_dump($loggedUser);
+    }
+   }
+      /*
+       * Try db tests later
+       *
+     try{
+      $_connection = new \PDO("mysql:host=".$host. ";dbname=" .$db_name, $db_user, $db_passwd);
+      $_connection->exec("set names utf8");
+      $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+      $sql = "INSERT INTO user (name,email,publication,birthdate,useroption,password) VALUES(?,?,?,?,?,?)";
+      var_dump($sql);
+      $query = $_connection->prepare($sql);
+      $query->bindValues($name, $email, $site, $birthdate, $option, $password);
+      $query->execute();
+      $lastuserid = $_connection->lastInsertId();
+     } catch (PDOException $exception) {
+      echo "Erreur de connexion : " .$exception->getMessage();
+     }
+
+     try {
+       $_connection = new \PDO("mysql:host=".$host. ";dbname=" .$db_name, $db_user, $db_passwd);
+       $_connection->exec("set names utf8");
+       $_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+       $sql = "INSERT INTO address (userid,city) VALUES (?,?)";
+       $query = $_connection->prepare($sql);
+       $query->bindValues($lastuserid, $cityaddress);
+       $query->execute();
+       
+     } catch (PDOException $exception) {
+      echo "Erreur de connexion : " .$exception->getMessage();
+     } 
+      * 
+      **/
+
+	//********** connection to db
+ //  mysqli_connect("localhost","root","root");
+ //  mysqli_select_db("usercpp");
+ //  $res=mysql_query("SELECT * FROM users ORDER BY name WHERE name="+$postname);
+?>
+
+<!-- then follow of our application : redo the form index.php if the user is not authenticated-->
+
+<?php if ((!isset($loggedUser['login'])) || ($loggedUser['login'] === '')): ?>
+        <form action="register.php" method="POST">
+		
+	<!-- si message d erreur on affiche -->
+	<?php if (isset($errorMessage)) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $errorMessage; ?>
+	    </div>
+        <?php endif ; ?>
+        <h2>Contactez nous</h2>
+            <div class="mb-3">
+                <label for="uname" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="uname" name="uname">
+            </div>
+	    <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" name="email">
+	    </div>
+	    <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+	    </div>
+	    <div class="mb-3">
+                <label for="repassword" class="form-label">Re-Password</label>
+                <input type="password" class="form-control" id="repassword" name="repassword">
+	    </div>
+            <div class="mb-3">
+                <label for="birthdate" class="form-label">Votre date de naissance (dd-mm-yyyy)</label>
+                <input type="text" class="form-control" id="birthdate" name="birthdate">
+	    </div>
+            <div class="mb-3">
+                <label for="cityaddress" class="form-label">Votre adresse (ville seulement)</label>
+                <input type="text" class="form-control" id="cityaddress" name="cityaddress">
+	    </div>
+	       <label for="option" class="form-label">Votre cursus</label>
+		<select name="option" id="option">
+                    <option value="1">MED</option>
+                    <option value="2">DRO</option>
+		    <option value="3">LIT</option>
+		    <option value="4">ING</option>
+                    <option value="5">ENT</option>
+                    <option value="6">INTER</option>
+                </select>
+            </div>
+            <div class="mb-3">
+
+                <label for="publication" class="form-label">Votre site web personnel</label>
+                <textarea class="form-control" placeholder="page perso" id="publication" name="publication"></textarea>
+	    </div>
+            <div class="mb-3">
+		 <input type="checkbox" id="contact1" name="contact1[]" value="true" checked>
+		 <input type="checkbox" id="contact1" name="contact1[]" value="false">
+                 <label for="contact1">Je suis d accord pour etre un contact</label><br>
+            </div>      
+	  <button type="submit" class="btn btn-primary">Envoyer</button>
+	</form>
+<?php else: ?>
+   <div class="alert alert-success" role="alert">
+      <?php if (!isset($loggedUser['contactname'])) {  //if (isset($loggedUser['login'])) echo $loggedUser['login'];
+        require_once(__DIR__.'/contactref.php');
+      } ?>
+   </div>
+<?php endif; ?>
+

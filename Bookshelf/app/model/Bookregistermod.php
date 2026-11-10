@@ -1,0 +1,65 @@
+<?php
+namespace model;
+
+class Bookregistermod {
+
+   private string $db_host = "localhost";
+   private string $db_name = "tblbook";
+   private string $db_passwd = "";
+   public string $table = "book";
+   public int $id=0;
+   public string $title = "";
+   public string $author = "";
+   public int $published = 1990;
+
+   protected $_connection;
+
+   public function __construct() {
+      $this->getConnection();
+   }
+
+   public function getConnection() {
+	   // on supprime la connexion precedente
+      $_connection = null;
+
+      try {
+      $_connection = new \PDO("sqlite::memory:", null, null, array(PDO::ATTR_PERSISTENT => true));
+         $this->_connection->exec("set names utf8");
+         $this->_connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+      } catch (PDOException $e) {
+	  echo "erreur dans init du modele Bookreg: ".$e->getMessage();
+      }
+   }
+
+   public function findById($id) : array {
+      try {
+	 $sql='SELECT * FROM tblbook WHERE id=:id';
+	 $sth=$this->_connection->prepare($sql);
+	 $sth->bindValue(':id', $id);
+	 $sth->execute();
+	 $result =$sth->fetch(PDO::FETcH_ASSOC);
+	 $sth=null;
+	 return $result;
+      } catch (PDOException $e) {
+	 echo "erreur dans findById du modele Bookreg: ".$e->getMessage();
+         return null;
+      }
+   }
+
+   public function save(BookDTO $bookDTO) : void {
+	   //astuce, dans BookDTO, faire une fonction qui renvoie un tableau aggregat
+	   $book_r = $bookDT0->toArray();
+	   try {
+		   $sql = 'INSERT INTO '.$this->table.'(title, author, published) VALUES (:title, :author, :published)';
+		   $sth = $_connection->prepare($sql);
+		   $sth->bindValue(':title', $book_r['title']);
+		   $sth->bindValue(':author',$book_r['author']);
+		   $sth->bindValue(':published', $book_r['published']);
+		   $sth->execute();
+                   //$id=$_connection->lastInsertId();
+	   } catch (PDOException $e) {
+		   echo "erreur de sauvegarde book: ".$e->getMessage();
+	   }
+   }
+}
+

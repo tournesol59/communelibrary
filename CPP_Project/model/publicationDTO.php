@@ -1,0 +1,66 @@
+<?php
+
+class publicationDTO {
+
+   public int $id;
+   public int $userid;
+   public string $ptitle;
+   public string $slug;
+   public bool $epublic;
+   public string $publicdate;
+   public string $siteurl;
+   
+   // validation var
+   public string $errorMessage;
+   
+   public function __construct(? $data) : void {
+      if (isset(data)) {
+          $errorMessage = '';
+	  $this->id = $data['id'];
+	  $this->userid = $data['userid'];
+	  $this->ptitle = $data['title'];
+	  $this->slug = $data['slug'];
+	  $this->epublic = ($data['public']===1 ?) true : false;
+          $this->siteurl = $data['siteurl'];
+	  //  $this->validate();
+       }
+   }
+   
+   public function validate() : void {
+       // in development: for creating form of a new publication, complete this as in registerDTO
+
+      if (isset($_POST['title']) && !($_POST['title'] == '') {
+         $this->ptitle = $_POST['title'];
+      }
+      else {
+         $errorMessage = 'You don t have entered a valid title';
+      }
+      if (isset($_POST['slug']) && !($_POST['slug'] == '') {
+         $this->slug = $_POST['slug'];
+      }
+      else {
+         $errorMessage = 'You don t have entered a valid slug';
+      }
+      if (isset($_POST['public']) && !($_POST['public'] == '') {
+         $this->title = ($_POST['public'] == 'true')? 'true' : 'false';
+      }
+      else {
+         $errorMessage = 'You don t have selected a type of publication';
+      }
+      if (isset($_POST['publicdate']) && !($_POST['publicdate'] == '') {
+         $this->publicdate = $_POST['publicdate'];
+      }
+      else {
+         $errorMessage = 'You don t have entered a valid date';
+      }
+      if (isset($_POST['siteurl']) && !($_POST['siteurl'] == '') {
+         $this->siteurl = $_POST['siteurl'];
+      }
+      else {
+         $errorMessage = 'You don t have entered a valid url address';
+      }
+      $this->errorMessage = '';		  
+   }
+}
+   
+?>
